@@ -1,0 +1,35 @@
+#time-and-volume {
+  font-weight: 400;
+  color: rgb(155, 155, 155);
+}
+
+#timeLength {
+  margin-right: 10px;
+  display: inline-block;
+  width: 40px;
+}
+
+#volume {
+  .volumeSlider {
+    display: none;
+    height: 15px;
+    position: relative;
+    top: 3px;
+    width: 200px;
+  }
+  &:before {
+    margin-right: 8px;
+  }
+  &:hover {
+    .volumeSlider {
+      display: inline-block;
+    }
+  }
+}
+
+.progress {
+  height: 20px;
+  .progress-bar {
+    background-color: rgb(155, 155, 155);
+  }
+}
