@@ -4,6 +4,7 @@
 import React from 'react';
 import ControlPanel from "./ControlPanel";
 import ShareComponent from "./ShareComponent";
+import "./MusicPlayer.css";
 class MusicPlayer extends React.Component {
     constructor(props) {
         super(props);
@@ -13,7 +14,7 @@ class MusicPlayer extends React.Component {
                 artist: "Justin Bieber",
                 length: 216000,
                 type: 'mp3',
-                now: 0,
+                now: 21054,
             },
             volume: 50,
         }
@@ -25,8 +26,10 @@ class MusicPlayer extends React.Component {
         return (
             <div>
                 <audio style={{display: 'none'}}></audio>
-                <h1>{music.title}</h1>
-                <h2>{music.artist}</h2>
+                <div className="title-and-artist">
+                    <h1 className="music-title">{music.title}</h1>
+                    <h2 className="music-artist">{music.artist}</h2>
+                </div>
                 <ControlPanel volume={volume} length={music.length} now={music.now}/>
                 <ShareComponent/>
             </div>
