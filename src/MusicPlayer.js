@@ -7,6 +7,9 @@ import 'whatwg-fetch'
 import ShareComponent from "./ShareComponent";
 import DocumentTitle from 'react-document-title';
 import "./MusicPlayer.css";
+import MusicCover from "./MusicCover";
+
+
 class MusicPlayer extends React.Component {
 
     constructor(props) {
@@ -37,10 +40,25 @@ class MusicPlayer extends React.Component {
         this.audio.load();
     }
 
-    async getMusic() {
-        let response = await fetch('http://127.0.0.1:8000/next');
-        return response.json();
+    async fakeGetMusic() {
+        if (!this.musics) {
+            this.index = 0;
+            let response = await fetch('/musics.json');
+            this.musics = await response.json();
+        }
+        if (this.index >= this.musics.length) {
+            this.index = 0;
+        }
+        return this.musics[this.index++];
     }
+
+    async getMusic() {
+        // let response = fetch('http://127.0.0.1:8000/next');
+        // return await response.json();
+        let music = await this.fakeGetMusic();
+        return music;
+    }
+
 
     updateProgress() {
         if (this.audio && !this.audio.paused) {
@@ -77,21 +95,26 @@ class MusicPlayer extends React.Component {
         const now = this.state.now;
         if (music) {
             return (
-                <div>
-                    <DocumentTitle title={music.title}/>
-                    <audio key="audio" ref={(audio) => this.audio = audio} style={{display: 'none'}} autoPlay={true}
-                           onEnded={this.handleNextMusic}>
-                        <source src={`http://127.0.0.1:8000/${music.file}`}/>
-                    </audio>
-                    <div className="title-and-artist">
-                        <h1 className="music-title">{music.title}</h1>
-                        <h2 className="music-artist">{music.artist}</h2>
+                <div className="music-player">
+                    <div className="content">
+                        <DocumentTitle title={music.title}/>
+                        <audio key="audio" ref={(audio) => this.audio = audio} style={{display: 'none'}} autoPlay={true}
+                               onEnded={this.handleNextMusic}>
+                            <source src={`${music.file}`}/>
+                        </audio>
+                        <div className="title-and-artist">
+                            <h1 className="music-title">{music.title}</h1>
+                            <h2 className="music-artist">{music.artist}</h2>
+                        </div>
+                        <ControlPanel paused={paused} onChangeVolume={this.handleChangeVolume}
+                                      onNextMusic={this.handleNextMusic}
+                                      volume={volume} duration={music.duration}
+                                      now={now} onPlayAndPause={this.handlePlayAndPause}/>
+                        {music.picture &&
+                        <MusicCover className="music-cover" picture={music.picture[0]} paused={paused}/>}
+
+                        <ShareComponent/>
                     </div>
-                    <ControlPanel paused={paused} onChangeVolume={this.handleChangeVolume}
-                                  onNextMusic={this.handleNextMusic}
-                                  volume={volume} duration={music.duration}
-                                  now={now} onPlayAndPause={this.handlePlayAndPause}/>
-                    <ShareComponent/>
                 </div>
             )
         } else {

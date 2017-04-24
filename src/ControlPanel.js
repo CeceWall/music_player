@@ -35,7 +35,7 @@ class ControlPanel extends React.Component {
         return (
             <div>
                 <div id="time-and-volume">
-                    <span id="timeLength">-{secondsToMinutes(duration)}</span>
+                    <span id="timeDuration">-{secondsToMinutes(duration)}</span>
                     <i id="volume" className="fa fa-volume-up" aria-hidden="true">
                         <Slider value={volume} handle={() => <div></div>} className="volumeSlider"
                                 onChange={this.handleChangeVolume} min={0} max={100}/>
@@ -43,12 +43,14 @@ class ControlPanel extends React.Component {
                 </div>
                 <Line className="play-progress" strokeLinecap="square" strokeColor={"#6BBD7A"}
                       percent={Math.round(now / duration * 100)}/>
-                <div>
-                    <i className="fa fa-heart" aria-hidden="true"></i>
-                    <i className="fa fa-trash" aria-hidden="true"></i>
-                    <i className={"fa " + (paused ? "fa-play" : "fa-pause")} onClick={this.props.onPlayAndPause}
+                <div className="buttons" style={{position: "relative"}}>
+                    <i id="" className="fa fa-heart favourite" aria-hidden="true"></i>
+                    <i id="" className="fa fa-trash trash" aria-hidden="true"></i>
+                    <i className={"fa play " + (paused ? "fa-play" : "fa-pause")}
+                       onClick={this.props.onPlayAndPause}
                        aria-hidden="true"></i>
-                    <i onClick={this.props.onNextMusic} className="fa fa-step-forward" aria-hidden="true"></i>
+                    <i className="fa fa-step-forward next" onClick={this.props.onNextMusic}
+                       aria-hidden="true"></i>
                 </div>
             </div>
         )

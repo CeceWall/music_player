@@ -3,14 +3,22 @@
   color: rgb(155, 155, 155);
 }
 
-#timeLength {
-  margin-right: 10px;
+#timeDuration {
+  margin-right: 15px;
   display: inline-block;
   width: 40px;
 }
 
 #volume {
+  padding-right: 15px;
   .volumeSlider {
+    .rc-slider-rail, .rc-slider-track {
+      height: 2px;
+      background-color: rgb(229, 229, 232);
+    }
+    .rc-slider-track {
+      background-color: rgb(151, 151, 151);
+    }
     transition: 0.5s;
     display: inline-block;
     height: 15px;
@@ -33,4 +41,30 @@
 .play-progress {
   height: 1px;
   width: 430px;
+}
+
+.buttons {
+  margin-top: 50px;
+  font-size: 28px;
+}
+
+.favourite, .trash, .play, .next {
+  position: absolute;
+  top: 0;
+}
+
+.favourite {
+  left: 0;
+}
+
+.trash {
+  left: 70px;
+}
+
+.play {
+  right: 90px;
+}
+
+.next {
+  right: 0;
 }
