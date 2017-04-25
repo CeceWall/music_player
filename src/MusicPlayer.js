@@ -8,6 +8,7 @@ import ShareComponent from "./ShareComponent";
 import DocumentTitle from 'react-document-title';
 import "./MusicPlayer.css";
 import MusicCover from "./MusicCover";
+// import musics from "./musics";
 
 
 class MusicPlayer extends React.Component {
@@ -41,22 +42,21 @@ class MusicPlayer extends React.Component {
     }
 
     async fakeGetMusic() {
-        if (!this.musics) {
-            this.index = 0;
-            let response = await fetch('/musics.json');
-            this.musics = await response.json();
-        }
-        if (this.index >= this.musics.length) {
-            this.index = 0;
-        }
-        return this.musics[this.index++];
+        // if (!this.musics) {
+        //     this.index = 0;
+            // this.musics = musics;
+        // }
+        // if (this.index >= this.musics.length) {
+        //     this.index = 0;
+        // }
+        // return this.musics[this.index++];
     }
 
     async getMusic() {
-        // let response = fetch('http://127.0.0.1:8000/next');
-        // return await response.json();
-        let music = await this.fakeGetMusic();
-        return music;
+        let response = await fetch('http://127.0.0.1:8000/next');
+        return await response.json();
+        // let music = await this.fakeGetMusic();
+        // return music;
     }
 
 
