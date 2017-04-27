@@ -1,29 +1,42 @@
 /**
  * Created by WJ on 2017/4/19.
  */
-import React from 'react';
-import Slider from 'rc-slider/lib/Slider';
-import {Line} from 'rc-progress';
-import "../node_modules/rc-slider/assets/index.css";
-import "../node_modules/font-awesome/css/font-awesome.min.css";
+import * as React from 'react';
+// import Slider from 'rc-slider/lib/Slider';
+const Slider: any = require('rc-slider');
+// import {Line} from 'rc-progress';
+const Progress: any = require('rc-progress');
+const Line: any = Progress.Line;
 import "./ControlPanel.css";
+import "../../node_modules/rc-slider/assets/index.css";
+import "../../node_modules/font-awesome/css/font-awesome.min.css";
 
 
 /**
  * @return {string}
  */
-function secondsToMinutes(seconds) {
+function secondsToMinutes(seconds: number): string {
     let date = new Date(0);
     date.setSeconds(seconds);
     return date.toISOString().substr(14, 5)
 }
-class ControlPanel extends React.Component {
-    constructor(props) {
+export interface ControlPanelProps {
+    onChangeVolume: (volume: number) => void;
+    onNextMusic: () => void;
+    onPlayAndPause: () => void;
+    volume: number;
+    duration: number;
+    now: number;
+    paused: boolean;
+}
+
+class ControlPanel extends React.Component <ControlPanelProps, undefined> {
+    constructor(props: ControlPanelProps) {
         super(props);
         this.handleChangeVolume = this.handleChangeVolume.bind(this);
     }
 
-    handleChangeVolume(volume) {
+    handleChangeVolume(volume: number) {
         this.props.onChangeVolume(volume);
     }
 
@@ -32,6 +45,7 @@ class ControlPanel extends React.Component {
         const duration = this.props.duration;
         const now = this.props.now;
         const paused = this.props.paused;
+
         return (
             <div>
                 <div id="time-and-volume">

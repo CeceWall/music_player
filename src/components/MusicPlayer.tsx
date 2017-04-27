@@ -1,20 +1,25 @@
 /**
  * Created by WJ on 2017/4/19.
  */
-import React from 'react';
+import * as React from 'react';
 import ControlPanel from "./ControlPanel";
-import 'whatwg-fetch'
-import ShareComponent from "./ShareComponent";
-import DocumentTitle from 'react-document-title';
 import "./MusicPlayer.css";
+import "isomorphic-fetch";
 import MusicCover from "./MusicCover";
-// import musics from "./musics";
 
+export interface MusicPlayerState {
+    paused?: boolean;
+    now?: number;
+    volume?: number;
+    music?: any;
+}
+class MusicPlayer extends React.Component<undefined, MusicPlayerState> {
+    timeInterval: number | undefined;
+    audio: HTMLAudioElement | undefined;
 
-class MusicPlayer extends React.Component {
-
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
+        this.timeInterval = 0;
         this.state = {
             paused: false,
             now: 0,
@@ -44,7 +49,7 @@ class MusicPlayer extends React.Component {
     async fakeGetMusic() {
         // if (!this.musics) {
         //     this.index = 0;
-            // this.musics = musics;
+        // this.musics = musics;
         // }
         // if (this.index >= this.musics.length) {
         //     this.index = 0;
@@ -55,8 +60,6 @@ class MusicPlayer extends React.Component {
     async getMusic() {
         let response = await fetch('http://127.0.0.1:8000/next');
         return await response.json();
-        // let music = await this.fakeGetMusic();
-        // return music;
     }
 
 
@@ -68,7 +71,7 @@ class MusicPlayer extends React.Component {
         }
     }
 
-    handleChangeVolume(volume) {
+    handleChangeVolume(volume: number) {
         this.setState({volume: volume});
         this.audio.volume = volume / 100.0;
     }
@@ -97,10 +100,9 @@ class MusicPlayer extends React.Component {
             return (
                 <div className="music-player">
                     <div className="content">
-                        <DocumentTitle title={music.title}/>
                         <audio key="audio" ref={(audio) => this.audio = audio} style={{display: 'none'}} autoPlay={true}
                                onEnded={this.handleNextMusic}>
-                            <source src={`${music.file}`}/>
+                            <source src={`http://127.0.0.1:5000/${music.file}`}/>
                         </audio>
                         <div className="title-and-artist">
                             <h1 className="music-title">{music.title}</h1>
@@ -113,7 +115,6 @@ class MusicPlayer extends React.Component {
                         {music.picture &&
                         <MusicCover className="music-cover" picture={music.picture[0]} paused={paused}/>}
 
-                        <ShareComponent/>
                     </div>
                 </div>
             )
