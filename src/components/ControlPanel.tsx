@@ -7,9 +7,11 @@ const Slider: any = require('rc-slider');
 // import {Line} from 'rc-progress';
 const Progress: any = require('rc-progress');
 const Line: any = Progress.Line;
-import "./ControlPanel.css";
+import "./ControlPanel.scss";
 import "../../node_modules/rc-slider/assets/index.css";
 import "../../node_modules/font-awesome/css/font-awesome.min.css";
+import {Store} from "../reducers/index";
+import Music = Store.Music;
 
 
 /**
@@ -21,13 +23,15 @@ function secondsToMinutes(seconds: number): string {
     return date.toISOString().substr(14, 5)
 }
 export interface ControlPanelProps {
-    onChangeVolume: (volume: number) => void;
+    music: Music;
+    onChangeVolume: (volume: Store.Volume) => void;
+    onUpdateProgress: () => void;
     onNextMusic: () => void;
-    onPlayAndPause: () => void;
-    volume: number;
+    onTogglePlay: () => void;
+    volume: Store.Volume;
     duration: number;
     now: number;
-    paused: boolean;
+    paused: Store.PlayState;
 }
 
 class ControlPanel extends React.Component <ControlPanelProps, undefined> {
@@ -36,8 +40,11 @@ class ControlPanel extends React.Component <ControlPanelProps, undefined> {
         this.handleChangeVolume = this.handleChangeVolume.bind(this);
     }
 
+    componentDidMount() {
+    }
+
     handleChangeVolume(volume: number) {
-        this.props.onChangeVolume(volume);
+        this.props.onChangeVolume(volume / 100.0);
     }
 
     render() {
@@ -51,7 +58,7 @@ class ControlPanel extends React.Component <ControlPanelProps, undefined> {
                 <div id="time-and-volume">
                     <span id="timeDuration">-{secondsToMinutes(duration)}</span>
                     <i id="volume" className="fa fa-volume-up" aria-hidden="true">
-                        <Slider value={volume} handle={() => <div></div>} className="volumeSlider"
+                        <Slider value={volume * 100} handle={() => <div></div>} className="volumeSlider"
                                 onChange={this.handleChangeVolume} min={0} max={100}/>
                     </i>
                 </div>
@@ -61,8 +68,7 @@ class ControlPanel extends React.Component <ControlPanelProps, undefined> {
                     <i id="" className="fa fa-heart favourite" aria-hidden="true"></i>
                     <i id="" className="fa fa-trash trash" aria-hidden="true"></i>
                     <i className={"fa play " + (paused ? "fa-play" : "fa-pause")}
-                       onClick={this.props.onPlayAndPause}
-                       aria-hidden="true"></i>
+                       onClick={this.props.onTogglePlay} aria-hidden="true"></i>
                     <i className="fa fa-step-forward next" onClick={this.props.onNextMusic}
                        aria-hidden="true"></i>
                 </div>

@@ -6,6 +6,11 @@ const webpack = require('webpack');
 const {CheckerPlugin} = require('awesome-typescript-loader');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+process.env.NODE_ENV = 'production';
+const extractSass = new ExtractTextPlugin({
+    filename: "[name].[contenthash].css",
+    disable: process.env.NODE_ENV === "development"
+});
 module.exports = {
 
     entry: [
@@ -42,6 +47,18 @@ module.exports = {
                 })
             },
             {
+                test: /\.scss?$/,
+                use: extractSass.extract({
+                    use: [{
+                        loader: "css-loader"
+                    }, {
+                        loader: "sass-loader"
+                    }],
+                    // use style-loader in development
+                    fallback: "style-loader"
+                })
+            },
+            {
                 enforce: "pre", test: /\.js$/, loader: "source-map-loader",
             },
             {
@@ -56,7 +73,20 @@ module.exports = {
             file: "./dist/index.html",
             template: "./public/index.html",
         }),
+        new webpack.optimize.UglifyJsPlugin({
+            compress: {
+                unused: true,
+                dead_code: true,
+                warnings: false,
+            }
+        }),
+        new webpack.DefinePlugin({
+            'process.env': {
+                NODE_ENV: JSON.stringify('production')
+            }
+        }),
         new ExtractTextPlugin("styles.css"),
+        extractSass,
         new webpack.NamedModulesPlugin(),
         new webpack.HotModuleReplacementPlugin(),
     ],

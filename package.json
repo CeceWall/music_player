@@ -16,13 +16,19 @@
     "react-redux": "^5.0.4",
     "react-router": "^4.1.1",
     "react-router-dom": "^4.1.1",
-    "redux": "^3.6.0"
+    "redux": "^3.6.0",
+    "redux-logger": "^3.0.1",
+    "redux-thunk": "^2.2.0"
   },
   "devDependencies": {
+    "@types/isomorphic-fetch": "^0.0.34",
     "@types/react": "^15.0.23",
     "@types/react-dom": "^15.5.0",
     "@types/react-redux": "^4.4.40",
     "@types/react-router": "^4.0.4",
+    "@types/redux": "^3.6.0",
+    "@types/redux-logger": "^3.0.0",
+    "@types/redux-thunk": "^2.1.0",
     "@types/webpack-env": "^1.13.0",
     "awesome-typescript-loader": "^3.1.2",
     "babel-core": "^6.24.1",
@@ -31,9 +37,11 @@
     "extract-text-webpack-plugin": "^2.1.0",
     "file-loader": "^0.11.1",
     "html-webpack-plugin": "^2.28.0",
+    "node-sass": "^4.5.2",
     "npm-run-all": "^4.0.2",
     "react-hot-loader": "next",
     "redux-devtools": "^3.3.2",
+    "sass-loader": "^6.0.3",
     "source-map-loader": "^0.2.1",
     "style-loader": "^0.16.1",
     "typescript": "^2.2.2",
@@ -43,10 +51,10 @@
   },
   "scripts": {
     "build-css": "scss --update src:src",
-    "watch-css": "scss --watch src:src",
-    "start": "npm-run-all -p watch-css start-js",
+    "watch-css": "scss --watch src:src --sourcemap=inline",
+    "start": "npm-run-all -p start-js",
     "start-js": "webpack-dev-server",
-    "build": "npm run build-css && react-scripts build && cp musics.json build/musics.json",
+    "build": "webpack",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   }

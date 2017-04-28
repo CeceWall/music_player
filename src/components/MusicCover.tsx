@@ -2,17 +2,11 @@
  * Created by weijian on 2017/4/24.
  */
 import * as React from 'react';
-import "./MusicCover.css";
-function encodeBase64Image(picture: any) {
-    let prefix = `data:image/${picture.format};base64,`;
-    let data = "";
-    for (let i = 0; i < picture.data.data.length; i++) {
-        data += String.fromCharCode(picture.data.data[i]);
-    }
-    return prefix + btoa(data);
-}
+import "./MusicCover.scss";
+import {Store} from "../reducers/index";
+
 export interface MusicCoverProps {
-    picture: any;
+    picture: Store.Picture;
     paused: boolean;
     className: string;
 }
@@ -20,12 +14,12 @@ class MusicCover extends React.Component<MusicCoverProps, undefined> {
     render() {
         const picture = this.props.picture;
         const paused = this.props.paused ? "animation-paused" : "";
-        if (picture) {
+        if (picture && picture.format) {
             return (
                 <div className={`${this.props.className}`}>
                     <div className={"cover animation-spinning " + paused}
                          style={{
-                             background: "url(" + encodeBase64Image(picture) + ") 0 0/cover",
+                             background: `url('data:image/${picture.format};base64,${picture.data}') 0 0/cover`,
                          }}></div>
                 </div>
             )
