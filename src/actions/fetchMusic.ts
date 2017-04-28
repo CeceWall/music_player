@@ -6,7 +6,7 @@ import * as fetch from "isomorphic-fetch";
 import {Store} from "../reducers";
 import {fetchCover, nextMusic} from "./index";
 
-const MusicServer = "192.168.199.127:8000";
+const MusicServer = "127.0.0.1:8000";
 export function fetchMusic() {
     return async function (dispatch: Redux.Dispatch<Store.ALL>) {
         let response = await fetch(`http://${MusicServer}/next`)

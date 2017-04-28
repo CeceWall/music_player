@@ -8,7 +8,7 @@ import {changeVolume, togglePlay, updateProgress} from "./index";
 import get = Reflect.get;
 import {fetchMusic} from "./fetchMusic";
 
-const MUSIC_SERVER = "192.168.199.127:5000";
+const MUSIC_SERVER = "127.0.0.1:5000";
 let timer: number;
 export function checkProgress() {
     return function (dispatch: Dispatch<Store.ALL>, getState: () => Store.ALL, audio: HTMLAudioElement) {
